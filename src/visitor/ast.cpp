@@ -21,7 +21,7 @@ using namespace std;
 // 	return 0;
 // }
 
-/// ASTs ///
+/// Accept Functions for PrinterV ///
 
 void StartA::accept(Visitor& v) { v.visit(this); }
 void ListA::accept(Visitor& v) { v.visit(this); }
@@ -49,12 +49,10 @@ void OpExpressionA::accept(Visitor& v) { v.visit(this); }
 void NewArrayA::accept(Visitor& v) { v.visit(this); }
 void ArrayRefA::accept(Visitor& v) { v.visit(this); }
 void VarDeclA::accept(Visitor& v) { v.visit(this); }
-
 void TypeA::accept(Visitor& v) { v.visit(this); }
 void PrimTypeA::accept(Visitor& v) { v.visit(this); }
 void ArrayTypeA::accept(Visitor& v) { v.visit(this); }
 void ClassTypeA::accept(Visitor& v) { v.visit(this); }
-
 void PrimaryExprA::accept(Visitor& v) { v.visit(this); }
 void ExpressionA::accept(Visitor& v) { v.visit(this); }
 void InitializerA::accept(Visitor& v) { v.visit(this); }
@@ -62,7 +60,6 @@ void StatementA::accept(Visitor& v) { v.visit(this); }
 void NameA::accept(Visitor& v) { v.visit(this); }
 void StrLitA::accept(Visitor& v) { v.visit(this); }
 void IntLitA::accept(Visitor& v) { v.visit(this); }
-
 void DimensionA::accept(Visitor& v) { v.visit(this); }
 void FieldExprA::accept(Visitor& v) { v.visit(this); }
 void NewObjExprA::accept(Visitor& v) { v.visit(this); }
@@ -79,7 +76,490 @@ void NullLitA::accept(Visitor& v) { v.visit(this); }
 void ModifierA::accept(Visitor& v) { v.visit(this); }
 void ThisExprA::accept(Visitor& v) { v.visit(this); }
 
-/// Visitors ///
+// Accept Functions for CodeGenV
+
+Value* StartA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ListA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ClassA::accept(CodeGenV& v) { return v.visit(this); }
+Value* SuperA::accept(CodeGenV& v) { return v.visit(this); }
+Value* MethodBodyA::accept(CodeGenV& v) { return v.visit(this); }
+Value* FieldDeclA::accept(CodeGenV& v) { return v.visit(this); }
+Value* FieldA::accept(CodeGenV& v) { return v.visit(this); }
+Value* MethodA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ConstructorA::accept(CodeGenV& v) { return v.visit(this); }
+Value* FormalA::accept(CodeGenV& v) { return v.visit(this); }
+Value* DeclStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* LocalA::accept(CodeGenV& v) { return v.visit(this); }
+Value* IfStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ExpressionStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* WhileStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ReturnStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ContinueStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* BreakStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* BlockStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* BlockA::accept(CodeGenV& v) { return v.visit(this); }
+Value* SuperStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* CallA::accept(CodeGenV& v) { return v.visit(this); }
+Value* OpExpressionA::accept(CodeGenV& v) { return v.visit(this); }
+Value* NewArrayA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ArrayRefA::accept(CodeGenV& v) { return v.visit(this); }
+Value* VarDeclA::accept(CodeGenV& v) { return v.visit(this); }
+Value* TypeA::accept(CodeGenV& v) { return v.visit(this); }
+Value* PrimTypeA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ArrayTypeA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ClassTypeA::accept(CodeGenV& v) { return v.visit(this); }
+Value* PrimaryExprA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ExpressionA::accept(CodeGenV& v) { return v.visit(this); }
+Value* InitializerA::accept(CodeGenV& v) { return v.visit(this); }
+Value* StatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* NameA::accept(CodeGenV& v) { return v.visit(this); }
+Value* StrLitA::accept(CodeGenV& v) { return v.visit(this); }
+Value* IntLitA::accept(CodeGenV& v) { return v.visit(this); }
+Value* DimensionA::accept(CodeGenV& v) { return v.visit(this); }
+Value* FieldExprA::accept(CodeGenV& v) { return v.visit(this); }
+Value* NewObjExprA::accept(CodeGenV& v) { return v.visit(this); }
+Value* PrimaryArrayA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ThisCallExprA::accept(CodeGenV& v) { return v.visit(this); }
+Value* SuperCallExprA::accept(CodeGenV& v) { return v.visit(this); }
+Value* EmptyStatementA::accept(CodeGenV& v) { return v.visit(this); }
+Value* MethodCallExprA::accept(CodeGenV& v) { return v.visit(this); }
+Value* SuperFieldExprA::accept(CodeGenV& v) { return v.visit(this); }
+Value* NonArrayPrimaryA::accept(CodeGenV& v) { return v.visit(this); }
+Value* BoolLitA::accept(CodeGenV& v) { return v.visit(this); }
+Value* CharLitA::accept(CodeGenV& v) { return v.visit(this); }
+Value* NullLitA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ModifierA::accept(CodeGenV& v) { return v.visit(this); }
+Value* ThisExprA::accept(CodeGenV& v) { return v.visit(this); }
+
+/// Codegen: Visitors ///
+
+Value* CodeGenV::visit(StrLitA* a)
+{
+
+}
+Value* CodeGenV::visit(CharLitA* a)
+{
+    return ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+}
+Value* CodeGenV::visit(IntLitA* a)
+{
+    return ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+}
+
+Value* CodeGenV::visit(BoolLitA* a)
+{
+    return ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+}
+
+Value* CodeGenV::visit(NullLitA* a)
+{
+        return ConstantInt::get(Type::getInt64Ty(TheContext), 0);
+}
+
+Value* CodeGenV::visit(NameA* a)
+{
+
+}
+
+Value* CodeGenV::visit(TypeA* a)
+{
+
+}
+
+Value* CodeGenV::visit(PrimTypeA* a)
+{
+    a->getName()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(ArrayTypeA* a)
+{
+    a->getType()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(ClassTypeA* a)
+{
+    a->getName()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(StatementA* a)
+{
+
+}
+
+Value* CodeGenV::visit(PrimaryExprA* a)
+{
+
+}
+
+Value* CodeGenV::visit(ExpressionA* a)
+{
+
+}
+
+Value* CodeGenV::visit(ListA* a)
+{
+
+    deque<AST *> asts = a->getASTs();
+    for (AST *a2 : asts) {
+        a2->accept(*this);
+    }
+
+}
+Value* CodeGenV::visit(StartA* a)
+{
+    a->getList()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(SuperA* a)
+{
+    a->getName()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(ClassA* a)
+{
+    a->getName()->accept(*this);
+    a->getSuperClass()->accept(*this);
+    a->getMembers()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(MethodBodyA* a)
+{
+    // a->getFormalList()->accept(*this); // repeated in MethodA
+    a->getStatementList()->accept(*this);
+
+}
+
+// IGNORE BELOW FOR THE MOMENT
+Value* CodeGenV::visit(FieldDeclA* a)
+{
+    a->getFieldList()->accept(*this);
+    // TODO
+    // for(auto var:this->var_declaration_list)
+    // {
+    //     if(data_type=="int")
+    //     {
+    //         type_func temp={var->getname(),"GLOBAL"};
+    //         var_map[temp]=0;
+    //     }
+    //     if(data_type=="boolean")
+    //     {
+    //         type_func temp={var->getname(),"GLOBAL"};
+    //         var_map[temp]=1;
+    //     }
+    // }
+
+}
+
+Value* CodeGenV::visit(VarDeclA* a)
+{
+    a->getName()->accept(*this);
+    a->getExpression()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(FieldA* a)
+{
+    a->getModifers()->accept(*this);
+    a->getType()->accept(*this);
+    a->getVar()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(ModifierA* a)
+{
+
+}
+
+Value* CodeGenV::visit(MethodA* a)
+{
+    a->getName()->accept(*this);
+    a->getModifiers()->accept(*this);
+    a->getType()->accept(*this);
+    a->getArgs()->accept(*this);
+    a->getMethodBody()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(ConstructorA* a)
+{
+    a->getType()->accept(*this);
+    a->getModifers()->accept(*this);
+    a->getMethodBody()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(FormalA* a)
+{
+    a->getType()->accept(*this);
+    a->getVarDecl()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(DeclStatementA* a)
+{
+    a->getType()->accept(*this);
+    a->getLocalList()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(LocalA* a)
+{
+    a->getExpression()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(IfStatementA* a)
+{
+    a->getExpression()->accept(*this);
+    a->getStatement1()->accept(*this);
+    a->getStatement2()->accept(*this);
+
+}
+Value* CodeGenV::visit(ExpressionStatementA* a)
+{
+    a->getExpression()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(WhileStatementA* a)
+{
+    a->getExpression()->accept(*this);
+    a->getStatement()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(ReturnStatementA* a)
+{
+    a->getExpression()->accept(*this);
+
+}
+Value* CodeGenV::visit(ContinueStatementA* a)
+{
+
+}
+Value* CodeGenV::visit(BreakStatementA* a)
+{
+
+}
+
+Value* CodeGenV::visit(BlockA* a)
+{
+    a->getStatementList()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(BlockStatementA* a)
+{
+    a->getBlock()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(EmptyStatementA* a)
+{
+
+}
+
+Value* CodeGenV::visit(NewArrayA* a)
+{
+    a->getType()->accept(*this);
+    a->getDimList()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(DimensionA* a)
+{
+
+}
+
+Value* CodeGenV::visit(ArrayRefA* a)
+{
+    a->getName()->accept(*this);
+    a->getExpression()->accept(*this);
+    a->getDim()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(PrimaryArrayA* a)
+{
+    a->getArray()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(NonArrayPrimaryA* a)
+{
+    a->getExpression()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(CallA* a)
+{
+    a->getName()->accept(*this);
+    a->getExpressionList()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(SuperStatementA* a)
+{
+    a->getArgs()->accept(*this);
+
+}
+
+// NOTE: Make sure lhs and rhs are pf the same type.
+
+Value* CodeGenV::visit(OpExpressionA* a)
+{
+    if (a->getArity() == 2)
+    {
+        Value *L = a->getExpression1()->accept(*this);
+        Value *R = a->getExpression2()->accept(*this);
+
+        if (!L || !R)
+        {
+          return LogErrorV("Missing operand for binary operator");
+        }
+        string op = a->getOp();
+        if ( op == "+")
+        {
+          return Builder.CreateFAdd(L, R, "addtmp");
+        }
+        else if (op == "-")
+        {
+          return Builder.CreateFSub(L, R, "subtmp");
+        }
+        else if (op == "*")
+        {
+          return Builder.CreateFMul(L, R, "multmp");
+        }
+        else if (op == "/")
+        {
+            return Builder.CreateFDiv(L, R, "divtmp");
+        }
+        else if (op == "%")
+        {
+            return Builder.CreateSRem(L, R, "modtmp");
+        }
+        else if (op == ">")
+        {
+            return Builder.CreateFCmpUGT(L, R, "gcmptmp");
+        }
+        else if (op == ">=")
+        {
+            return Builder.CreateFCmpUGE(L, R, "geqcmptmp");
+        }
+        else if (op == "<")
+        {
+          return Builder.CreateFCmpULT(L, R, "lcmptmp");
+        }
+        else if (op == "<=")
+        {
+            return Builder.CreateFCmpULE(L, R, "leqcmptmp");
+        }
+        else if (op == "!=")
+        {
+            return Builder.CreateICmpNE(L, R, "neqcmptmp");
+        }
+        else if (op == "==")
+        {
+            return Builder.CreateICmpEQ(L, R, "neqcmptmp");
+        }
+
+        else if (op == "&&")
+        {
+             return Builder.CreateAnd(L, R, "landtmp");
+        }
+        else if (op == "||")
+        {
+            return Builder.CreateOr(L, R, "landtmp");
+        }
+
+        else
+        {
+          return LogErrorV("invalid binary operator");
+        }
+
+    }
+    else
+    {
+        Value *E = a->getExpression1()->accept(*this);
+        string op = a->getOp();
+        if ( op == "-" )
+        {
+            return Builder.CreateNeg(E, "neg");
+        }
+        else if (op == "!")
+        {
+            return Builder.CreateNot(E, "not");
+        }
+        else
+        {
+            return LogErrorV("invalid unary operator");
+        }
+    }
+
+}
+
+Value* CodeGenV::visit(ThisExprA* a)
+{
+
+}
+
+Value* CodeGenV::visit(NewObjExprA* a)
+{
+    a->getName()->accept(*this);
+    a->getExpressionList()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(ThisCallExprA* a)
+{
+    a->getName()->accept(*this);
+    a->getArgs()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(MethodCallExprA* a)
+{
+    a->getType()->accept(*this);
+    a->getName()->accept(*this);
+    a->getArgs()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(SuperCallExprA* a)
+{
+    a->getName()->accept(*this);
+    a->getArgs()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(FieldExprA* a)
+{
+    a->getType()->accept(*this);
+    a->getName()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(SuperFieldExprA* a)
+{
+    a->getName()->accept(*this);
+
+}
+
+Value* CodeGenV::visit(InitializerA* a)
+{
+
+}
+
+
+
+
+/// Printer: Visitors ///
 void PrinterV::visit(StrLitA* a) {
     indent();
     cout << "StrLitA: " << a->getValue() << "\n";
@@ -115,7 +595,7 @@ void PrinterV::visit(NullLitA* a) {
 
 void PrinterV::visit(NameA* a) {
     indent();
-    cout << "NameA" << a->getName() << endl;
+    cout << "NameA: " << a->getName() << endl;
     ++d;
     --d;
 }
@@ -246,7 +726,7 @@ void PrinterV::visit(FieldA* a) {
 
 void PrinterV::visit(ModifierA* a) {
     indent();
-    cout << "ModifierA" << a->getModifier() << endl;
+    cout << "ModifierA: " << a->getModifier() << endl;
     ++d;
     --d;
 }
