@@ -1,19 +1,23 @@
-#ifndef AST_H
-#define AST_H
+#ifndef _AST_H_
+#define _AST_H_
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/LegacyPassManager.h>
 #include <llvm/IR/IRBuilder.h>
-#include "llvm/IR/Module.h"
+#include <llvm/IR/Module.h>
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Constants.h>
+#include <iostream>
+#include <list>
+#include <map>
+#include <stack>
 #include <string>
 #include <deque>
 
 
 using namespace std;
 using namespace llvm;
-
-
 
 /// LLVM ///
 static LLVMContext TheContext;
@@ -22,7 +26,146 @@ static std::unique_ptr<Module> TheModule;
 static std::map<std::string, Value *> NamedValues;
 
 
-struct Null{};
+/// SymbolTable ///
+class Scope
+{
+public:
+    BasicBlock* block;
+    std::map<string, Value*> localSymbols;
+
+    Scope(BasicBlock * b): block(b) {};
+
+    bool hasSymbol(string name)
+    {
+        auto it = localSymbols.find(name);
+        return localSymbols.end() != it;
+    }
+
+    Value* getValue(string name)
+    {
+        if (hasSymbol(name))
+        {
+            return localSymbols[name];
+        }
+        else
+        {
+            cout << "Variable not in scope" << endl;
+            return nullptr;
+        }
+    }
+
+    void declareVar(string name, Value* value)
+    {
+        localSymbols.insert({name, value});
+    }
+
+    void declareVar(string name)
+    {
+        localSymbols.insert({name, ConstantInt::get(Type::getInt64Ty(TheContext), 0)});
+    }
+
+    void setValue(string name, Value* value)
+    {
+        if (hasSymbol(name))
+        {
+            localSymbols[name] = value;
+        }
+        else
+        {
+            fprintf(stderr, "Variable %s not in scope.\n", name);
+        }
+    }
+};
+
+class SymbolTable
+{
+private:
+    list<Scope> scopes;
+
+public:
+    SymbolTable() {};
+
+    // Set value of symbol in current scope.
+    void setLocal(string name, Value* value)
+    {
+        this->scopes.front().setValue(name, value);
+    }
+
+    //Check if a symbol is in current scope
+    bool isLocal(string name)
+    {
+        return this->scopes.front().hasSymbol(name);
+    }
+
+    // Get the value of symbol in current scope
+    Value* getLocal(string name)
+    {
+        return this->scopes.front().getValue(name);
+
+    }
+
+    // Declare symbol in current scope
+    void declareLocal(string name, Value* value) {
+        if (!isLocal(name))
+        {
+            this->scopes.front().declareVar(name, value);
+        }
+        else
+        {
+            fprintf(stderr, "Variable %s already declared!\n", name);
+
+        }
+    }
+
+    // Check if value is declared in any scope
+    bool isGlobal(string name)
+    {
+        for(auto scope : scopes)
+        {
+            if (scope.hasSymbol(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //returns value for the symbol closest to the current scope
+    Value * getGlobal(std::string name)
+    {
+        for(auto scope : scopes)
+        {
+            if (scope.hasSymbol(name))
+            {
+                return scope.getValue(name);
+            }
+        }
+    }
+
+    void enterScope(BasicBlock* block) {
+        this->scopes.push_front(Scope(block));
+    }
+
+    void leaveScope() {
+        this->scopes.pop_front();
+    }
+
+    BasicBlock* topBlock() {
+
+        return this->scopes.back().block;
+    }
+
+    BasicBlock* localBlock()
+    {
+        return this->scopes.front().block;
+    }
+
+};
+
+
+
+
+//struct Null{};
 // union Value {
 //     int i;
 //     char c;
@@ -765,7 +908,7 @@ class CodeGenV {
     // Module * module;
     // StartA * start;
     // Function * mainFunction;
-    // symbol_table symbol_table_obj;
+    //SymbolTable symbolTable;
 public:
     Value* LogErrorV(const char *s) {
     //LogError(Str);
@@ -887,44 +1030,5 @@ public:
     virtual void visit(ThisExprA* a);
 };
 
-// class CounterV : public Visitor {
-//     int c = 0;
-// public:
-//     virtual void visit(StartA* a);
-//     virtual void visit(ListA* a);
-//     virtual void visit(ClassA* a);
-//     virtual void visit(SuperA* a);
-//     virtual void visit(MethodBodyA* a);
-//     virtual void visit(FieldDeclA* a);
-//     virtual void visit(FieldA* a);
-//     virtual void visit(MethodA* a);
-//     virtual void visit(ConstructorA* a);
-//     virtual void visit(FormalA* a);
-//     virtual void visit(DeclStatementA* a);
-//     virtual void visit(LocalA* a);
-//     virtual void visit(IfStatementA* a);
-//     virtual void visit(ExpressionStatementA* a);
-//     virtual void visit(WhileStatementA* a);
-//     virtual void visit(ReturnStatementA* a);
-//     virtual void visit(ContinueStatementA* a);
-//     virtual void visit(BreakStatementA* a);
-//     virtual void visit(BlockStatementA* a);
-//     virtual void visit(BlockA* a);
-//     virtual void visit(SuperStatementA* a);
-//     virtual void visit(CallA* a);
-//     virtual void visit(OpExpressionA* a);
-//     virtual void visit(NewArrayA* a);
-//     virtual void visit(ArrayRefA* a);
-
-//     virtual void visit(PrimTypeA* a);
-//     virtual void visit(ArrayTypeA* a);
-//     virtual void visit(ClassTypeA* a);
-
-//     virtual void visit(ExpressionA* a);
-//     virtual void visit(InitializerA* a);
-//     virtual void visit(StatementA* a);
-//     virtual void visit(NameA* a);
-//     virtual void visit(StrLitA* a);
-// };
 
 #endif /* AST_H */

@@ -153,7 +153,7 @@ Value* CodeGenV::visit(BoolLitA* a)
 
 Value* CodeGenV::visit(NullLitA* a)
 {
-        return ConstantInt::get(Type::getInt64Ty(TheContext), 0);
+    return ConstantInt::get(Type::getInt64Ty(TheContext), 0);
 }
 
 Value* CodeGenV::visit(NameA* a)
