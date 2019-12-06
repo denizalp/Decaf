@@ -1,11 +1,17 @@
-parser: parser.ypp lexer.l ast.h ast.cpp
+
+# export CC := clang
+# export CXX := $(CC)++
+# export AR := /usr/local/opt/llvm/bin/llvm-ar
+# export LD := /usr/local/opt/llvm/bin/lld
+
+
+parser: parser.ypp lexer.l visitor/ast.h visitor/ast.cpp
 	flex lexer.l
 	bison -d parser.ypp
 
 
-compiler: parser
-	g++ -std=c++11 -o parser parser.tab.cpp lex.yy.c ast.cpp -ll -g -ldl -lfl `llvm-config --cppflags --libs --libfiles core --ldflags --system-libs`
-	#g++ -std=c++11 -Wfatal-errors -o parser parser.tab.cpp lex.yy.c
+compiler: parser lex.yy.c visitor/ast.cpp
+	clang++ -std=c++11 -o parser parser.tab.cpp lex.yy.c visitor/ast.cpp -ll -g -ldl `llvm-config --cppflags --libs --libfiles core --ldflags --system-libs` 
 
 
 # TESTS #

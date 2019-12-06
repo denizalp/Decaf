@@ -72,7 +72,7 @@ public:
         }
         else
         {
-            fprintf(stderr, "Variable %s not in scope.\n", name);
+            fprintf(stderr, "Variable %s not in scope.\n", name.c_str());
         }
     }
 };
@@ -112,7 +112,7 @@ public:
         }
         else
         {
-            fprintf(stderr, "Variable %s already declared!\n", name);
+            fprintf(stderr, "Variable %s already declared!\n", name.c_str());
 
         }
     }
@@ -140,6 +140,7 @@ public:
                 return scope.getValue(name);
             }
         }
+        return nullptr;
     }
 
     void enterScope(BasicBlock* block) {

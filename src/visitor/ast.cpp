@@ -135,68 +135,72 @@ Value* ThisExprA::accept(CodeGenV& v) { return v.visit(this); }
 
 Value* CodeGenV::visit(StrLitA* a)
 {
-
+    return nullptr;
 }
 Value* CodeGenV::visit(CharLitA* a)
 {
-    return ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+    ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+    return nullptr;
 }
 Value* CodeGenV::visit(IntLitA* a)
 {
-    return ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+    ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+    return nullptr;
 }
 
 Value* CodeGenV::visit(BoolLitA* a)
 {
-    return ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+    ConstantInt::get(Type::getInt64Ty(TheContext), a->getValue());
+    return nullptr;
 }
 
 Value* CodeGenV::visit(NullLitA* a)
 {
-    return ConstantInt::get(Type::getInt64Ty(TheContext), 0);
+    ConstantInt::get(Type::getInt64Ty(TheContext), 0);
+    return nullptr;
 }
 
 Value* CodeGenV::visit(NameA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(TypeA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(PrimTypeA* a)
 {
     a->getName()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ArrayTypeA* a)
 {
     a->getType()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ClassTypeA* a)
 {
     a->getName()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(StatementA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(PrimaryExprA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ExpressionA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ListA* a)
@@ -206,18 +210,18 @@ Value* CodeGenV::visit(ListA* a)
     for (AST *a2 : asts) {
         a2->accept(*this);
     }
-
+    return nullptr;
 }
 Value* CodeGenV::visit(StartA* a)
 {
     a->getList()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(SuperA* a)
 {
     a->getName()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ClassA* a)
@@ -225,6 +229,7 @@ Value* CodeGenV::visit(ClassA* a)
     a->getName()->accept(*this);
     a->getSuperClass()->accept(*this);
     a->getMembers()->accept(*this);
+    return nullptr;
 
 }
 
@@ -232,7 +237,7 @@ Value* CodeGenV::visit(MethodBodyA* a)
 {
     // a->getFormalList()->accept(*this); // repeated in MethodA
     a->getStatementList()->accept(*this);
-
+    return nullptr;
 }
 
 // IGNORE BELOW FOR THE MOMENT
@@ -253,14 +258,14 @@ Value* CodeGenV::visit(FieldDeclA* a)
     //         var_map[temp]=1;
     //     }
     // }
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(VarDeclA* a)
 {
     a->getName()->accept(*this);
     a->getExpression()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(FieldA* a)
@@ -268,12 +273,12 @@ Value* CodeGenV::visit(FieldA* a)
     a->getModifers()->accept(*this);
     a->getType()->accept(*this);
     a->getVar()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ModifierA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(MethodA* a)
@@ -283,7 +288,7 @@ Value* CodeGenV::visit(MethodA* a)
     a->getType()->accept(*this);
     a->getArgs()->accept(*this);
     a->getMethodBody()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ConstructorA* a)
@@ -291,27 +296,27 @@ Value* CodeGenV::visit(ConstructorA* a)
     a->getType()->accept(*this);
     a->getModifers()->accept(*this);
     a->getMethodBody()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(FormalA* a)
 {
     a->getType()->accept(*this);
     a->getVarDecl()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(DeclStatementA* a)
 {
     a->getType()->accept(*this);
     a->getLocalList()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(LocalA* a)
 {
     a->getExpression()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(IfStatementA* a)
@@ -319,62 +324,62 @@ Value* CodeGenV::visit(IfStatementA* a)
     a->getExpression()->accept(*this);
     a->getStatement1()->accept(*this);
     a->getStatement2()->accept(*this);
-
+    return nullptr;
 }
 Value* CodeGenV::visit(ExpressionStatementA* a)
 {
     a->getExpression()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(WhileStatementA* a)
 {
     a->getExpression()->accept(*this);
     a->getStatement()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ReturnStatementA* a)
 {
     a->getExpression()->accept(*this);
-
+    return nullptr;
 }
 Value* CodeGenV::visit(ContinueStatementA* a)
 {
-
+    return nullptr;
 }
 Value* CodeGenV::visit(BreakStatementA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(BlockA* a)
 {
     a->getStatementList()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(BlockStatementA* a)
 {
     a->getBlock()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(EmptyStatementA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(NewArrayA* a)
 {
     a->getType()->accept(*this);
     a->getDimList()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(DimensionA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ArrayRefA* a)
@@ -382,32 +387,32 @@ Value* CodeGenV::visit(ArrayRefA* a)
     a->getName()->accept(*this);
     a->getExpression()->accept(*this);
     a->getDim()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(PrimaryArrayA* a)
 {
     a->getArray()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(NonArrayPrimaryA* a)
 {
     a->getExpression()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(CallA* a)
 {
     a->getName()->accept(*this);
     a->getExpressionList()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(SuperStatementA* a)
 {
     a->getArgs()->accept(*this);
-
+    return nullptr;
 }
 
 // NOTE: Make sure lhs and rhs are pf the same type.
@@ -506,21 +511,21 @@ Value* CodeGenV::visit(OpExpressionA* a)
 
 Value* CodeGenV::visit(ThisExprA* a)
 {
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(NewObjExprA* a)
 {
     a->getName()->accept(*this);
     a->getExpressionList()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(ThisCallExprA* a)
 {
     a->getName()->accept(*this);
     a->getArgs()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(MethodCallExprA* a)
@@ -528,32 +533,32 @@ Value* CodeGenV::visit(MethodCallExprA* a)
     a->getType()->accept(*this);
     a->getName()->accept(*this);
     a->getArgs()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(SuperCallExprA* a)
 {
     a->getName()->accept(*this);
     a->getArgs()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(FieldExprA* a)
 {
     a->getType()->accept(*this);
     a->getName()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(SuperFieldExprA* a)
 {
     a->getName()->accept(*this);
-
+    return nullptr;
 }
 
 Value* CodeGenV::visit(InitializerA* a)
 {
-
+    return nullptr;
 }
 
 
