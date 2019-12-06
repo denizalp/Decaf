@@ -240,9 +240,10 @@ class CounterV;
 
 class AST {
 public:
+    Value *val;
     AST() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -250,7 +251,7 @@ class ExpressionA : public AST {
 public:
     ExpressionA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -260,7 +261,7 @@ class TypeA : public AST {;
 public:
     TypeA(){};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -270,7 +271,7 @@ public:
     StrLitA(string v): value(v) {};
     string getValue() { return value; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -280,7 +281,7 @@ public:
     CharLitA(char v): value(v) {};
     char getValue() { return value; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -290,7 +291,7 @@ public:
     IntLitA(int v): value(v) {};
     int getValue() { return value; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -300,7 +301,7 @@ public:
     BoolLitA(bool v): value(v) {};
     bool getValue() { return value; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -308,7 +309,7 @@ class NullLitA : public LitA {
 public:
     NullLitA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -316,7 +317,7 @@ class PrimaryExprA : public ExpressionA {
 public:
     PrimaryExprA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -326,7 +327,7 @@ public:
     NameA(string n): name(n){};
     string getName() { return name; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -336,7 +337,7 @@ public:
     PrimTypeA(NameA *n): name(n) { };
     NameA *getName() { return name; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -350,7 +351,7 @@ public:
     TypeA *getType() { return type; };
     int getDim() { return dim; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -360,14 +361,14 @@ public:
     ClassTypeA(NameA* n): name(n) {};
     NameA* getName() { return name; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 class StatementA : public AST {
 public:
     StatementA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -381,7 +382,7 @@ public:
     void addb(AST *a) { asts.push_back(a); }
     void addf(AST *a) { asts.push_front(a); }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 class StartA : public AST {
@@ -393,7 +394,7 @@ public:
     void addb(AST *a) { list->addb(a); }
     void addf(AST *a) { list->addf(a); }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -403,7 +404,7 @@ public:
     SuperA(NameA *n): name(n) {};
     NameA *getName() { return name; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -422,7 +423,7 @@ public:
     SuperA *getSuperClass() { return superClass; };
     ListA *getMembers() { return members; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -435,7 +436,7 @@ public:
     ListA *getFormalList() { return formalList; };
     ListA *getStatementList() { return statementList; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -446,7 +447,7 @@ public:
     FieldDeclA(ListA *fs): fieldList(fs) {};
     ListA *getFieldList() { return fieldList; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -459,7 +460,7 @@ public:
     NameA *getName() { return name; }
     ExpressionA *getExpression() { return expression; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -473,7 +474,7 @@ public:
     TypeA *getType() { return type; };
     VarDeclA *getVar() { return var; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -483,7 +484,7 @@ public:
     ModifierA(string m): modifier(m) {};
     string getModifier() { return modifier; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -507,7 +508,7 @@ public:
     ListA *getArgs() { return args; }
     MethodBodyA *getMethodBody() { return methodbody; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -525,7 +526,7 @@ public:
     ListA *getModifers() { return modifiers; }
     MethodBodyA *getMethodBody() { return methodbody; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -537,7 +538,7 @@ public:
     TypeA *getType() { return type; };
     NameA *getVarDecl() { return varDecl; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -549,7 +550,7 @@ public:
     TypeA *getType() { return type; };
     ListA *getLocalList() { return localList; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -559,7 +560,7 @@ public:
     LocalA(ExpressionA *e): expression(e) {};
     ExpressionA *getExpression() { return expression; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -574,7 +575,7 @@ public:
     StatementA *getStatement1() { return statement1; };
     StatementA *getStatement2() { return statement2; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -584,7 +585,7 @@ public:
     ExpressionStatementA(ExpressionA *e): expression(e) {};
     ExpressionA *getExpression() { return expression; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -596,7 +597,7 @@ public:
     ExpressionA *getExpression() { return expression; };
     StatementA *getStatement() { return statement; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -606,7 +607,7 @@ public:
     ReturnStatementA(ExpressionA *e): expression(e) {};
     ExpressionA *getExpression() { return expression; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 class ContinueStatementA : public StatementA {
@@ -614,7 +615,7 @@ class ContinueStatementA : public StatementA {
 public:
     ContinueStatementA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 class BreakStatementA : public StatementA {
@@ -622,7 +623,7 @@ class BreakStatementA : public StatementA {
 public:
     BreakStatementA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -633,7 +634,7 @@ public:
     BlockA(ListA *ss): statementList(ss) {};
     ListA *getStatementList() { return statementList; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -643,7 +644,7 @@ public:
     BlockStatementA(BlockA *b): block(b) {};
     BlockA *getBlock() { return block; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -652,7 +653,7 @@ class EmptyStatementA : public StatementA {
 public:
     EmptyStatementA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -664,7 +665,7 @@ public:
     TypeA *getType() { return type; };
     ListA *getDimList() { return dimList; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -674,7 +675,7 @@ public:
     DimensionA(ExpressionA *d): dim(d) {};
     ExpressionA *getDim() { return dim; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -690,7 +691,7 @@ public:
     ExpressionA *getExpression() { return expression; };
     DimensionA *getDim() { return dim; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -700,7 +701,7 @@ public:
     PrimaryArrayA(NewArrayA *a): array(a) {};
     NewArrayA* getArray() { return array; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -710,7 +711,7 @@ public:
     NonArrayPrimaryA(ExpressionA* e): expression(e) {};
     ExpressionA* getExpression() { return expression; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -722,7 +723,7 @@ public:
     NameA *getName() { return name; };
     ListA *getExpressionList() { return expressionList; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -732,7 +733,7 @@ public:
     SuperStatementA(ListA *a): args(a) {};
     ListA *getArgs() { return args; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -751,7 +752,7 @@ public:
     ExpressionA *getExpression1() { return expression1; };
     ExpressionA *getExpression2() { return expression2; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -760,7 +761,7 @@ class ThisExprA : public ExpressionA {
 public:
     ThisExprA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -772,7 +773,7 @@ public:
     NameA *getName() { return name; };
     ListA *getExpressionList() { return expressions; }
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -784,7 +785,7 @@ public:
     NameA *getName() { return name; };
     ListA *getArgs() { return args; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -798,7 +799,7 @@ public:
     NameA *getName() { return name; };
     ListA *getArgs() { return args; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -810,7 +811,7 @@ public:
     NameA *getName() { return name; };
     ListA *getArgs() { return args; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -822,7 +823,7 @@ public:
     PrimaryExprA *getType() { return type; };
     NameA *getName() { return name; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -832,7 +833,7 @@ public:
     SuperFieldExprA(NameA *n): name(n) {};
     NameA *getName() { return name; };
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -840,7 +841,7 @@ class InitializerA : public AST {
 public:
     InitializerA() {};
     virtual void accept(Visitor& v);
-    virtual Value* accept(CodeGenV& v);
+    // virtual Value* accept(CodeGenV& v);
     // virtual Value* Codegen();
 };
 
@@ -905,71 +906,70 @@ public:
 
 };
 
-class CodeGenV {
-    // Module * module;
-    // StartA * start;
-    // Function * mainFunction;
-    //SymbolTable symbolTable;
-public:
-    Value* LogErrorV(const char *s) {
-    //LogError(Str);
-    //return nullptr;
-    cout << "XXXX error: " << s << " XXXXXXXXXXXXXXXXXXXXXXX\n";
-    return nullptr;
-    }
-    virtual Value* visit(StartA* a);
-    virtual Value* visit(ListA* a);
-    virtual Value* visit(ClassA* a);
-    virtual Value* visit(SuperA* a);
-    virtual Value* visit(MethodBodyA* a);
-    virtual Value* visit(FieldDeclA* a);
-    virtual Value* visit(FieldA* a);
-    virtual Value* visit(MethodA* a);
-    virtual Value* visit(ConstructorA* a);
-    virtual Value* visit(FormalA* a);
-    virtual Value* visit(DeclStatementA* a);
-    virtual Value* visit(LocalA* a);
-    virtual Value* visit(IfStatementA* a);
-    virtual Value* visit(ExpressionStatementA* a);
-    virtual Value* visit(WhileStatementA* a);
-    virtual Value* visit(ReturnStatementA* a);
-    virtual Value* visit(ContinueStatementA* a);
-    virtual Value* visit(BreakStatementA* a);
-    virtual Value* visit(BlockStatementA* a);
-    virtual Value* visit(BlockA* a);
-    virtual Value* visit(SuperStatementA* a);
-    virtual Value* visit(CallA* a);
-    virtual Value* visit(OpExpressionA* a);
-    virtual Value* visit(NewArrayA* a);
-    virtual Value* visit(ArrayRefA* a);
-    virtual Value* visit(VarDeclA* a);
-    virtual Value* visit(TypeA *a);
-    virtual Value* visit(PrimTypeA* a);
-    virtual Value* visit(ArrayTypeA* a);
-    virtual Value* visit(ClassTypeA* a);
-    virtual Value* visit(PrimaryExprA* a);
-    virtual Value* visit(ExpressionA* a);
-    virtual Value* visit(InitializerA* a);
-    virtual Value* visit(StatementA* a);
-    virtual Value* visit(NameA* a);
-    virtual Value* visit(StrLitA* a);
-    virtual Value* visit(IntLitA* a);
-    virtual Value* visit(DimensionA* a);
-    virtual Value* visit(FieldExprA* a);
-    virtual Value* visit(NewObjExprA* a);
-    virtual Value* visit(PrimaryArrayA* a);
-    virtual Value* visit(ThisCallExprA* a);
-    virtual Value* visit(SuperCallExprA* a);
-    virtual Value* visit(EmptyStatementA* a);
-    virtual Value* visit(MethodCallExprA* a);
-    virtual Value* visit(SuperFieldExprA* a);
-    virtual Value* visit(NonArrayPrimaryA* a);
-    virtual Value* visit(BoolLitA* a);
-    virtual Value* visit(CharLitA* a);
-    virtual Value* visit(NullLitA* a);
-    virtual Value* visit(ModifierA* a);
-    virtual Value* visit(ThisExprA* a);
-};
+// class CodeGenV {
+//     // Module * module;
+//     // StartA * start;
+//     // Function * mainFunction;
+//     //SymbolTable symbolTable;
+// public:
+//     void LogErrorV(const char *s) {
+//         //LogError(Str);
+//         //return nullptr;
+//         cout << "XXXX error: " << s << " XXXXXXXXXXXXXXXXXXXXXXX\n";
+//     }
+//     virtual void visit(StartA* a);
+//     virtual void visit(ListA* a);
+//     virtual void visit(ClassA* a);
+//     virtual void visit(SuperA* a);
+//     virtual void visit(MethodBodyA* a);
+//     virtual void visit(FieldDeclA* a);
+//     virtual void visit(FieldA* a);
+//     virtual void visit(MethodA* a);
+//     virtual void visit(ConstructorA* a);
+//     virtual void visit(FormalA* a);
+//     virtual void visit(DeclStatementA* a);
+//     virtual void visit(LocalA* a);
+//     virtual void visit(IfStatementA* a);
+//     virtual void visit(ExpressionStatementA* a);
+//     virtual void visit(WhileStatementA* a);
+//     virtual void visit(ReturnStatementA* a);
+//     virtual void visit(ContinueStatementA* a);
+//     virtual void visit(BreakStatementA* a);
+//     virtual void visit(BlockStatementA* a);
+//     virtual void visit(BlockA* a);
+//     virtual void visit(SuperStatementA* a);
+//     virtual void visit(CallA* a);
+//     virtual void visit(OpExpressionA* a);
+//     virtual void visit(NewArrayA* a);
+//     virtual void visit(ArrayRefA* a);
+//     virtual void visit(VarDeclA* a);
+//     virtual void visit(TypeA *a);
+//     virtual void visit(PrimTypeA* a);
+//     virtual void visit(ArrayTypeA* a);
+//     virtual void visit(ClassTypeA* a);
+//     virtual void visit(PrimaryExprA* a);
+//     virtual void visit(ExpressionA* a);
+//     virtual void visit(InitializerA* a);
+//     virtual void visit(StatementA* a);
+//     virtual void visit(NameA* a);
+//     virtual void visit(StrLitA* a);
+//     virtual void visit(IntLitA* a);
+//     virtual void visit(DimensionA* a);
+//     virtual void visit(FieldExprA* a);
+//     virtual void visit(NewObjExprA* a);
+//     virtual void visit(PrimaryArrayA* a);
+//     virtual void visit(ThisCallExprA* a);
+//     virtual void visit(SuperCallExprA* a);
+//     virtual void visit(EmptyStatementA* a);
+//     virtual void visit(MethodCallExprA* a);
+//     virtual void visit(SuperFieldExprA* a);
+//     virtual void visit(NonArrayPrimaryA* a);
+//     virtual void visit(BoolLitA* a);
+//     virtual void visit(CharLitA* a);
+//     virtual void visit(NullLitA* a);
+//     virtual void visit(ModifierA* a);
+//     virtual void visit(ThisExprA* a);
+// };
 
 class PrinterV : public Visitor {
     int d = 0;

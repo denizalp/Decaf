@@ -4,14 +4,14 @@
 # export AR := /usr/local/opt/llvm/bin/llvm-ar
 # export LD := /usr/local/opt/llvm/bin/lld
 
-
-parser: parser.ypp lexer.l visitor/ast.h visitor/ast.cpp
+# visitor/ast.h visitor/ast.cpp
+parser: parser.ypp lexer.l 
 	flex lexer.l
 	bison -d parser.ypp
 
 
-compiler: parser lex.yy.c visitor/ast.cpp
-	clang++ -std=c++11 -o parser parser.tab.cpp lex.yy.c visitor/ast.cpp -ll -g -ldl `llvm-config --cppflags --libs --libfiles core --ldflags --system-libs` 
+compiler: parser
+	g++ -std=c++11 -o parser parser.tab.cpp lex.yy.c -ll -g -ldl `llvm-config --cppflags --libs --libfiles core --ldflags --system-libs` 
 
 
 # TESTS #
