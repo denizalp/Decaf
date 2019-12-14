@@ -25,7 +25,7 @@ void CodeGenV::visit(NullLitA* a) {
 }
 
 void CodeGenV::visit(NameA* a) {
-    indent(a->getDepth()); 
+    indent(a->getDepth());
     cout << "NameA: " << a->getName() << " (case " << a->getCase() << ")\n";
     string name = a->getName();
     switch(a->getCase()) {
@@ -115,7 +115,8 @@ void CodeGenV::visit(StartA* a) {
     std::vector<Type*> mainArgTypes;
     FunctionType *mainFT = FunctionType::get(mainReturnType, mainArgTypes, false);
 
-    Function *MainFunction = Function::Create(mainFT, Function::ExternalLinkage, "_$DecafMain", TheModule.get()); 
+    Function *MainFunction = Function::Create(mainFT, Function::ExternalLinkage, "_$DecafMain", TheModule.get());
+
 
     BasicBlock *BB = BasicBlock::Create(TheContext, "entry", MainFunction);
     Builder.SetInsertPoint(BB);
@@ -142,7 +143,49 @@ void CodeGenV::visit(ClassA* a) {
 
 void CodeGenV::visit(MethodBodyA* a) {
     indent(a->getDepth()); cout << "MethodBodyA\n";
-    // a->getFormalList()->accept(*this); // repeated in MethodA
+
+    Function* TheFunction = a->getParent()->getFunc();
+    if(!TheFunction)
+    {
+
+    }
+    dequeue<AST*> *formals = a->getFormalList()->getASTs();
+
+
+    // Set names for all arguments.
+    unsigned Idx = 0;
+    for (auto &Arg : TheFunction->args())
+    {
+        Arg.setName((dynamic_cast<FormalA*> formals[Idx++])->getName());
+    }
+
+    BasicBlock *BB = BasicBlock::Create(TheContext, "entry", TheFunction);
+    Builder.SetInsertPoint(BB);
+
+    // Record the function arguments in the NamedValues map.
+
+    for (auto &Arg : TheFunction->args())
+        currSymTab->declareLocal(Arg.getName(),  &Arg);
+
+    Builder.CreateRet(nullptr); // c++ nullptr = llvm void
+    a->getBlock()->accept(*this)
+    if (Value *RetVal = a->getBlock()->getReg())
+    {
+        // Finish off the function.
+        Builder.CreateRet(RetVal);
+
+        // Validate the generated code, checking for consistency.
+        verifyFunction(*TheFunction);
+
+        // Run the optimizer on the function.
+        TheFPM->run(*TheFunction);
+
+        return TheFunction;
+    }
+
+    // Error reading body, remove function.
+    TheFunction->eraseFromParent();
+    return nullptr;
     a->getStatementList()->accept(*this);
 }
 
@@ -175,7 +218,7 @@ void CodeGenV::visit(MethodA* a) {
     currMethod = a;
     currSymTab = a->getSymbolTable();
     currSymTab->enterScope();
-    
+
     a->getModifiers()->accept(*this);
 
     // return type
@@ -184,17 +227,17 @@ void CodeGenV::visit(MethodA* a) {
 
     // arg types
     std::vector<Type*> argTypes;
-    currArgTypes = argTypes;    
+    currArgTypes = argTypes;
     a->getArgs()->accept(*this);    // populates currArgTypes
     FunctionType *FT = FunctionType::get(returnType, currArgTypes, false);
-    
+
     // make TheFunction
     string fname = a->getClass()->getName() + "." + a->getName();   // avoid name collision across classes
-    Function *TheFunction = Function::Create(FT, Function::ExternalLinkage, fname, TheModule.get());   
+    Function *TheFunction = Function::Create(FT, Function::ExternalLinkage, fname, TheModule.get());
+
     a->setFunc(TheFunction);
-    BasicBlock *BB = BasicBlock::Create(TheContext, "entry", TheFunction);
-    Builder.SetInsertPoint(BB);
-    
+
+
 
     // // call IO$getInt()
     // std::vector<Value *> getIntArgsV;
@@ -213,10 +256,7 @@ void CodeGenV::visit(MethodA* a) {
     // build method
     a->getMethodBody()->accept(*this);
 
-    // TODO: segfaults if multiple/no returns
-    Builder.CreateRet(nullptr); // c++ nullptr = llvm void
 
-    verifyFunction(*TheFunction);
     // TheFPM->run(*TheFunction);   // TODO: uncomment for optimizations
 }
 
@@ -233,7 +273,7 @@ void CodeGenV::visit(FormalA* a) {
     currArgTypes.push_back(a->getType()->getIRType());
     if (a->getType()->getReg() != nullptr) {
         currSymTab->declareLocal(a->getName(), a->getType()->getReg());
-    }   
+    }
 }
 
 void CodeGenV::visit(DeclStatementA* a) {
@@ -271,7 +311,7 @@ void CodeGenV::visit(IfStatementA* a) {
     Builder.CreateBr(MergeBB);
     // Codegen of 'Then' can change the current block, update ThenBB for the PHI.
     ThenBB = Builder.GetInsertBlock();
-    
+
     // Emit else block.
     TheFunction->getBasicBlockList().push_back(ElseBB);
     Builder.SetInsertPoint(ElseBB);
@@ -319,12 +359,12 @@ void CodeGenV::visit(WhileStatementA* a) {
     Builder.CreateBr(CondBB);
     // Codegen of 'Then' can change the current block, update ThenBB for the PHI.
     ThenBB = Builder.GetInsertBlock();
-    
+
     // Emit else block.
     TheFunction->getBasicBlockList().push_back(ElseBB);
     Builder.SetInsertPoint(ElseBB);
 
-    
+
 }
 
 void CodeGenV::visit(ReturnStatementA* a) {
@@ -395,7 +435,7 @@ void CodeGenV::visit(SuperStatementA* a) {
 }
 
 void CodeGenV::visit(OpExpressionA* a) {
-    indent(a->getDepth()); 
+    indent(a->getDepth());
     cout << "OpExpressionA: " << a->getOp() << " (arity " << a->getArity() << ")\n";
     nameCase = 6;
     ExpressionA *e1 = a->getExpression1();

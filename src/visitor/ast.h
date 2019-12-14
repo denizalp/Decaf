@@ -398,6 +398,7 @@ public:
     BlockA(): statementList(new ListA()) {};
     BlockA(ListA *ss): statementList(ss) {};
     ListA *getStatementList() { return statementList; };
+    vector<StatementA*> getStatements() { return dynamic_cast<StatementA*> getStatementList()->getASTs()}
     virtual void accept(Visitor& v);
 };
 class BlockStatementA : public StatementA {
