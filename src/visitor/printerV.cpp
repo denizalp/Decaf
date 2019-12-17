@@ -132,7 +132,7 @@ void PrinterV::visit(MethodBodyA* a) {
     cout << "MethodBodyA\n";
     ++d;
     // a->getFormalList()->accept(*this); // repeated in MethodA
-    a->getStatementList()->accept(*this);
+    a->getBlock()->accept(*this);
     --d;
 }
 

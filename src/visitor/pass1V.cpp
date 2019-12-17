@@ -155,7 +155,7 @@ void Pass1V::visit(MethodBodyA* a) {
     a->setDepth(d);
     ++d;
     // a->getFormalList()->accept(*this); // repeated in MethodA
-    a->getStatementList()->accept(*this);
+    a->getBlock()->accept(*this);
     --d;
 }
 

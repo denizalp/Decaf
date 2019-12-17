@@ -132,7 +132,6 @@ StartA* start;
     class NewArrayA*    newArrayA;
     class PrimaryExprA* primaryExprA;
     class NameA*        nameA;
-
 }
 
 %type<i>                bracket_list
@@ -156,7 +155,8 @@ StartA* start;
 %type<modifierA>        modifier
 %type<newArrayA>        new_array_expr
 %type<primaryExprA>     primary
-%type<s>            var_decl_id
+%type<s>                var_decl_id
+
 
 
 %%
@@ -255,22 +255,22 @@ modifier_list
 
 method_decl
     : modifier_list type_decl IDENTIFIER formal_args block {
-        yydebug(" $$ = new MethodA($1, $2, $3, $4, new MethodBodyA($4, $5->getStatementList())); ");
-        $$ = new MethodA($1, $2, $3, $4, new MethodBodyA($4, $5->getStatementList()));
+        yydebug(" $$ = new MethodA($1, $2, $3, $4, new MethodBodyA($4, $5)); ");
+        $$ = new MethodA($1, $2, $3, $4, new MethodBodyA($4, $5));
     }
     | type_decl IDENTIFIER formal_args block {
-        yydebug(" $$ = new MethodA($1, $2, $3, new MethodBodyA($3, $4->getStatementList())); ");
-        $$ = new MethodA($1, $2, $3, new MethodBodyA($3, $4->getStatementList()));
+        yydebug(" $$ = new MethodA($1, $2, $3, new MethodBodyA($3, $4)); ");
+        $$ = new MethodA($1, $2, $3, new MethodBodyA($3, $4));
     }
 
 ctor
     : modifier_list IDENTIFIER formal_args block {
         yydebug(" $$ = new ConstructorA(new ClassTypeA(new NameA($2, 1)), $1, new MethodBodyA($3, $4->getStatementList())); ");
-        $$ = new ConstructorA(new ClassTypeA(new NameA($2, 1)), $1, new MethodBodyA($3, $4->getStatementList()));
+        $$ = new ConstructorA(new ClassTypeA(new NameA($2, 1)), $1, new MethodBodyA($3, $4));
     }
     | IDENTIFIER formal_args block {
         yydebug(" $$ = new ConstructorA(new ClassTypeA(new NameA($1, 1)), new MethodBodyA($2, $3->getStatementList())); ");
-        $$ = new ConstructorA(new ClassTypeA(new NameA($1, 1)), new MethodBodyA($2, $3->getStatementList()));
+        $$ = new ConstructorA(new ClassTypeA(new NameA($1, 1)), new MethodBodyA($2, $3));
     }
 
 modifier
@@ -709,16 +709,16 @@ int main(int argc, char **argv) {
     // Create a new pass manager attached to it.
     TheFPM = make_unique<legacy::FunctionPassManager>(TheModule.get());
     // Promote allocas to registers.
-    TheFPM->add(createPromoteMemoryToRegisterPass());
+    //TheFPM->add(createPromoteMemoryToRegisterPass());
     // Do simple "peephole" optimizations and bit-twiddling optzns.
-    TheFPM->add(createInstructionCombiningPass());
+    //TheFPM->add(createInstructionCombiningPass());
     // Reassociate expressions.
-    TheFPM->add(createReassociatePass());
+    //TheFPM->add(createReassociatePass());
     // Eliminate Common SubExpressions.
-    TheFPM->add(createGVNPass());
+    //TheFPM->add(createGVNPass());
     // Simplify the control flow graph (deleting unreachable blocks, etc).
-    TheFPM->add(createCFGSimplificationPass());
-    TheFPM->doInitialization();
+    //TheFPM->add(createCFGSimplificationPass());
+    //TheFPM->doInitialization();
 
     start->accept(*(new CodeGenV()));
     cout << "\n";
@@ -735,9 +735,9 @@ int main(int argc, char **argv) {
     TheModule->print(errs(), nullptr);
     // cout << "\n";
 
-    if (start->getMain() == nullptr) { 
-        fprintf(stderr, "No main method defined"); 
-        return 1; 
+    if (start->getMain() == nullptr) {
+        fprintf(stderr, "No main method defined");
+        return 1;
     }
 
     // Initialize the target registry etc.

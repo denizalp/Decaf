@@ -22,10 +22,10 @@
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
-#include <llvm/Transforms/InstCombine/InstCombine.h>
-#include <llvm/Transforms/Scalar.h>
-#include <llvm/Transforms/Scalar/GVN.h>
-#include <llvm/Transforms/Utils.h>
+// #include <llvm/Transforms/InstCombine/InstCombine.h>
+// #include <llvm/Transforms/Scalar.h>
+// #include <llvm/Transforms/Scalar/GVN.h>
+// #include <llvm/Transforms/Utils.h>
 
 
 #include "symbolTable.h"
@@ -258,14 +258,30 @@ public:
     virtual void accept(Visitor& v);
 };
 
+class BlockA : public AST {
+    ListA *statementList;
+public:
+    BlockA(): statementList(new ListA()) {};
+    BlockA(ListA *ss): statementList(ss) {};
+    ListA *getStatementList() { return statementList; };
+    virtual void accept(Visitor& v);
+};
+class BlockStatementA : public StatementA {
+    BlockA *block;
+public:
+    BlockStatementA(): block(new BlockA()) {};
+    BlockStatementA(BlockA *b): block(b) {};
+    BlockA *getBlock() { return block; };
+    virtual void accept(Visitor& v);
+};
 
 class MethodBodyA : public AST {
     ListA *formalList;
-    ListA *statementList;
+    BlockA *block;
 public:
-    MethodBodyA(ListA *fs, ListA *ss): formalList(fs), statementList(ss) {};
+    MethodBodyA(ListA *fs, BlockA *b): formalList(fs), block(b) {};
     ListA *getFormalList() { return formalList; };
-    ListA *getStatementList() { return statementList; };
+    BlockA *getBlock() { return block; };
     virtual void accept(Visitor& v);
 };
 
@@ -392,22 +408,7 @@ public:
     EmptyStatementA() {};
     virtual void accept(Visitor& v);
 };
-class BlockA : public AST {
-    ListA *statementList;
-public:
-    BlockA(): statementList(new ListA()) {};
-    BlockA(ListA *ss): statementList(ss) {};
-    ListA *getStatementList() { return statementList; };
-    virtual void accept(Visitor& v);
-};
-class BlockStatementA : public StatementA {
-    BlockA *block;
-public:
-    BlockStatementA(): block(new BlockA()) {};
-    BlockStatementA(BlockA *b): block(b) {};
-    BlockA *getBlock() { return block; };
-    virtual void accept(Visitor& v);
-};
+
 
 class IfStatementA : public StatementA {
     ExpressionA *expression;
