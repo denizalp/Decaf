@@ -408,7 +408,27 @@ public:
     EmptyStatementA() {};
     virtual void accept(Visitor& v);
 };
+<<<<<<< HEAD
 
+=======
+class BlockA : public AST {
+    ListA *statementList;
+public:
+    BlockA(): statementList(new ListA()) {};
+    BlockA(ListA *ss): statementList(ss) {};
+    ListA *getStatementList() { return statementList; };
+    vector<StatementA*> getStatements() { return dynamic_cast<StatementA*> getStatementList()->getASTs()}
+    virtual void accept(Visitor& v);
+};
+class BlockStatementA : public StatementA {
+    BlockA *block;
+public:
+    BlockStatementA(): block(new BlockA()) {};
+    BlockStatementA(BlockA *b): block(b) {};
+    BlockA *getBlock() { return block; };
+    virtual void accept(Visitor& v);
+};
+>>>>>>> 55942218f6a002350961f299a93d73da2dbcdf1f
 
 class IfStatementA : public StatementA {
     ExpressionA *expression;
