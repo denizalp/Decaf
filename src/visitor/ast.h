@@ -22,10 +22,10 @@
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
-// #include <llvm/Transforms/InstCombine/InstCombine.h>
-// #include <llvm/Transforms/Scalar.h>
-// #include <llvm/Transforms/Scalar/GVN.h>
-// #include <llvm/Transforms/Utils.h>
+#include <llvm/Transforms/InstCombine/InstCombine.h>
+#include <llvm/Transforms/Scalar.h>
+#include <llvm/Transforms/Scalar/GVN.h>
+#include <llvm/Transforms/Utils.h>
 
 
 #include "symbolTable.h"
@@ -45,9 +45,9 @@ class FieldA;
 /// ASTs ///
 
 class AST {
-    Value *reg;     // TODO: move somewhere more specific?
-    BasicBlock *bb; // TODO: move somewhere more specific?
-    Function *func; // TODO: move somewhere more specific?
+    Value *reg;
+    BasicBlock *bb;
+    Function *func; 
     int depth = 0;
     AST *parent;
 public:
@@ -67,7 +67,14 @@ public:
     virtual void accept(Visitor& v) = 0;
 };
 
-class ExpressionA : public AST {
+class StatementA : public AST {
+public:
+    StatementA() {};
+    virtual void accept(Visitor& v);
+};
+
+class ExpressionA : public StatementA
+{
 public:
     ExpressionA() {};
     virtual void accept(Visitor& v);
@@ -170,11 +177,7 @@ public:
     NameA* getName() { return name; }
     virtual void accept(Visitor& v);
 };
-class StatementA : public AST {
-public:
-    StatementA() {};
-    virtual void accept(Visitor& v);
-};
+
 
 
 class ListA : public AST {
@@ -227,8 +230,6 @@ class ClassA : public AST {
     // NOTE: Changed constructors so default is provided in Parser.ypp
     // We need to decide if the type of superClass is ClassA, SuperA TypeA or ClassTypeA
     ListA *members;
-    std::map<string, MethodA*> methodTable;
-    std::map<string, FieldA*> fieldTable;
 public:
     //ClassA(string n): name(n), members(new ListA()) {};
     ClassA(string n, SuperA *sc): name(n), superClass(sc), members(new ListA()) {};
@@ -237,24 +238,6 @@ public:
     string getName() { return name; };
     SuperA *getSuperClass() { return superClass; };
     ListA *getMembers() { return members; };
-
-    void addMethod(string name, MethodA *method) { methodTable.insert({name, method}); }
-    bool hasMethod(string name) { return methodTable.end() != methodTable.find(name); }
-    MethodA *getMethod(string name) {
-        if (hasMethod(name)) { return methodTable[name]; } else {
-            cout << "Method not in scope: " << name << endl;
-            return nullptr;
-        }
-    }
-    void addField(string name, FieldA *field) { fieldTable.insert({name, field}); }
-    bool hasField(string name) { return fieldTable.end() != fieldTable.find(name); }
-    FieldA *getField(string name) {
-        if (hasField(name)) { return fieldTable[name]; } else {
-            cout << "Field not in scope: " << name << endl;
-            return nullptr;
-        }
-    }
-
     virtual void accept(Visitor& v);
 };
 
@@ -264,14 +247,6 @@ public:
     BlockA(): statementList(new ListA()) {};
     BlockA(ListA *ss): statementList(ss) {};
     ListA *getStatementList() { return statementList; };
-    virtual void accept(Visitor& v);
-};
-class BlockStatementA : public StatementA {
-    BlockA *block;
-public:
-    BlockStatementA(): block(new BlockA()) {};
-    BlockStatementA(BlockA *b): block(b) {};
-    BlockA *getBlock() { return block; };
     virtual void accept(Visitor& v);
 };
 
@@ -286,14 +261,6 @@ public:
 };
 
 
-// Is this one necessary?
-class FieldDeclA : public AST {
-    ListA *fieldList;
-public:
-    FieldDeclA(ListA *fs): fieldList(fs) {};
-    ListA *getFieldList() { return fieldList; };
-    virtual void accept(Visitor& v);
-};
 
 
 class VarDeclA : public AST {
@@ -395,40 +362,13 @@ public:
     virtual void accept(Visitor& v);
 };
 
-class LocalA : public AST {
-    ExpressionA *expression;
-public:
-    LocalA(ExpressionA *e): expression(e) {};
-    ExpressionA *getExpression() { return expression; };
-    virtual void accept(Visitor& v);
-};
 
 class EmptyStatementA : public StatementA {
 public:
     EmptyStatementA() {};
     virtual void accept(Visitor& v);
 };
-<<<<<<< HEAD
 
-=======
-class BlockA : public AST {
-    ListA *statementList;
-public:
-    BlockA(): statementList(new ListA()) {};
-    BlockA(ListA *ss): statementList(ss) {};
-    ListA *getStatementList() { return statementList; };
-    vector<StatementA*> getStatements() { return dynamic_cast<StatementA*> getStatementList()->getASTs()}
-    virtual void accept(Visitor& v);
-};
-class BlockStatementA : public StatementA {
-    BlockA *block;
-public:
-    BlockStatementA(): block(new BlockA()) {};
-    BlockStatementA(BlockA *b): block(b) {};
-    BlockA *getBlock() { return block; };
-    virtual void accept(Visitor& v);
-};
->>>>>>> 55942218f6a002350961f299a93d73da2dbcdf1f
 
 class IfStatementA : public StatementA {
     ExpressionA *expression;
@@ -440,14 +380,6 @@ public:
     ExpressionA *getExpression() { return expression; };
     StatementA *getStatement1() { return statement1; };
     StatementA *getStatement2() { return statement2; };
-    virtual void accept(Visitor& v);
-};
-
-class ExpressionStatementA : public StatementA {
-    ExpressionA *expression;
-public:
-    ExpressionStatementA(ExpressionA *e): expression(e) {};
-    ExpressionA *getExpression() { return expression; };
     virtual void accept(Visitor& v);
 };
 
@@ -483,7 +415,7 @@ public:
 
 
 
-class NewArrayA : public AST {
+class NewArrayA : public ExpressionA {
     TypeA *type;
     ListA *dimList;
 public:
@@ -515,14 +447,6 @@ public:
     virtual void accept(Visitor& v);
 };
 
-class PrimaryArrayA : public PrimaryExprA {
-    NewArrayA *array;
-public:
-    PrimaryArrayA(NewArrayA *a): array(a) {};
-    NewArrayA* getArray() { return array; };
-    virtual void accept(Visitor& v);
-};
-
 
 class NonArrayPrimaryA : public PrimaryExprA {
     ExpressionA* expression;
@@ -532,15 +456,6 @@ public:
     virtual void accept(Visitor& v);
 };
 
-class CallA : public AST {
-    NameA *name;
-    ListA *expressionList;
-public:
-    CallA(NameA *n, ListA *es): name(n), expressionList(es) {};
-    NameA *getName() { return name; };
-    ListA *getExpressionList() { return expressionList; };
-    virtual void accept(Visitor& v);
-};
 
 class SuperStatementA : public StatementA {
     ListA *args;
@@ -634,12 +549,6 @@ public:
     virtual void accept(Visitor& v);
 };
 
-class InitializerA : public AST {
-public:
-    InitializerA() {};
-    virtual void accept(Visitor& v);
-};
-
 
 
 
@@ -655,23 +564,18 @@ public:
     virtual void visit(ClassA* a) = 0;
     virtual void visit(SuperA* a) = 0;
     virtual void visit(MethodBodyA* a) = 0;
-    virtual void visit(FieldDeclA* a) = 0;
     virtual void visit(FieldA* a) = 0;
     virtual void visit(MethodA* a) = 0;
     virtual void visit(ConstructorA* a) = 0;
     virtual void visit(FormalA* a) = 0;
     virtual void visit(DeclStatementA* a) = 0;
-    virtual void visit(LocalA* a) = 0;
     virtual void visit(IfStatementA* a) = 0;
-    virtual void visit(ExpressionStatementA* a) = 0;
     virtual void visit(WhileStatementA* a) = 0;
     virtual void visit(ReturnStatementA* a) = 0;
     virtual void visit(ContinueStatementA* a) = 0;
     virtual void visit(BreakStatementA* a) = 0;
-    virtual void visit(BlockStatementA* a) = 0;
     virtual void visit(BlockA* a) = 0;
     virtual void visit(SuperStatementA* a) = 0;
-    virtual void visit(CallA* a) = 0;
     virtual void visit(OpExpressionA* a) = 0;
     virtual void visit(NewArrayA* a) = 0;
     virtual void visit(ArrayRefA* a) = 0;
@@ -684,7 +588,6 @@ public:
 
     virtual void visit(PrimaryExprA* a) = 0;
     virtual void visit(ExpressionA* a) = 0;
-    virtual void visit(InitializerA* a) = 0;
     virtual void visit(StatementA* a) = 0;
     virtual void visit(NameA* a) = 0;
     virtual void visit(StrLitA* a) = 0;
@@ -693,7 +596,6 @@ public:
     virtual void visit(DimensionA* a) = 0;
     virtual void visit(FieldExprA* a) = 0;
     virtual void visit(NewObjExprA* a) = 0;
-    virtual void visit(PrimaryArrayA* a) = 0;
     virtual void visit(ThisCallExprA* a) = 0;
     virtual void visit(SuperCallExprA* a) = 0;
     virtual void visit(EmptyStatementA* a) = 0;

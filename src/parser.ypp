@@ -18,11 +18,8 @@ extern "C" int yyparse();
 // extern "C" voIDENTIFIER yyerror(char *s); // lol
 extern "C" void yyerror(string s);
 extern "C" int yywrap(void){return 1;};
-
 extern "C" void yydebug(string s);
-
 extern FILE *yyin;
-
 StartA* start;
 
 
@@ -428,8 +425,8 @@ statement
         $$ = new IfStatementA($3, $5, $7);
     }
     | expr SEMICOLON {
-        yydebug(" $$ = new ExpressionStatementA($1); ");
-        $$ = new ExpressionStatementA($1);
+        yydebug(" $$ = $1; ");
+        $$ = $1;
     }
     | WHILE OP expr CP statement {
         yydebug(" $$ = new WhileStatement(new symbolTable(), $3, $5); ");
@@ -453,7 +450,7 @@ statement
     }
     | block {
         yydebug(" $$ = new Block($1); ");
-        $$ = new BlockStatementA($1);
+        $$ = $1;
     }
     | SUPER actual_args SEMICOLON {
         yydebug(" $$ = new SuperStatementA($2); ");
@@ -537,7 +534,7 @@ expr
 primary
     : new_array_expr {
         yyerror(" $$ = $1 ");
-        $$ = new PrimaryArrayA($1);
+        $$ = $1;
     }
     | non_new_array_expr {
         yydebug(" $$ = $1; ");
@@ -708,17 +705,17 @@ int main(int argc, char **argv) {
 
     // Create a new pass manager attached to it.
     TheFPM = make_unique<legacy::FunctionPassManager>(TheModule.get());
-    // Promote allocas to registers.
-    //TheFPM->add(createPromoteMemoryToRegisterPass());
+    // Promote allocations to registers.
+    TheFPM->add(createPromoteMemoryToRegisterPass());
     // Do simple "peephole" optimizations and bit-twiddling optzns.
-    //TheFPM->add(createInstructionCombiningPass());
+    TheFPM->add(createInstructionCombiningPass());
     // Reassociate expressions.
-    //TheFPM->add(createReassociatePass());
+    TheFPM->add(createReassociatePass());
     // Eliminate Common SubExpressions.
-    //TheFPM->add(createGVNPass());
+    TheFPM->add(createGVNPass());
     // Simplify the control flow graph (deleting unreachable blocks, etc).
-    //TheFPM->add(createCFGSimplificationPass());
-    //TheFPM->doInitialization();
+    TheFPM->add(createCFGSimplificationPass());
+    TheFPM->doInitialization();
 
     start->accept(*(new CodeGenV()));
     cout << "\n";
@@ -726,14 +723,14 @@ int main(int argc, char **argv) {
     cout << "\n===[FINALIZING]===\n";
     cout << "\n";
 
-    // TheModule->print(errs(), nullptr);
+     TheModule->print(errs(), nullptr);
 
     // cout << "Main Register: " << start->getMain()->getReg() << "\n";
     // cout << "Main BasicBlock: " << start->getMain()->getBB() << "\n";
 
     // Print out all of the generated code.
     TheModule->print(errs(), nullptr);
-    // cout << "\n";
+     cout << "\n";
 
     if (start->getMain() == nullptr) {
         fprintf(stderr, "No main method defined");
@@ -782,7 +779,7 @@ int main(int argc, char **argv) {
     }
 
     legacy::PassManager pass;
-    auto FileType = llvm::LLVMTargetMachine::CGFT_ObjectFile; //CGFT_ObjectFile;
+    auto FileType = llvm::LLVMTargetMachine::CGFT_ObjectFile; CGFT_ObjectFile;
 
     if (TheTargetMachine->addPassesToEmitFile(pass, dest, nullptr, FileType)) {
         errs() << "TheTargetMachine can't emit a file of this type";

@@ -136,14 +136,6 @@ void PrinterV::visit(MethodBodyA* a) {
     --d;
 }
 
-void PrinterV::visit(FieldDeclA* a) {
-    indent();
-    cout << "FieldDeclA\n";
-    ++d;
-    a->getFieldList()->accept(*this);
-    --d;
-}
-
 void PrinterV::visit(VarDeclA* a) {
     indent();
     cout << "VarDeclA: " << a->getName() << endl;
@@ -207,14 +199,6 @@ void PrinterV::visit(DeclStatementA* a) {
     --d;
 }
 
-void PrinterV::visit(LocalA* a) {
-    indent();
-    cout << "LocalA\n";
-    ++d;
-    a->getExpression()->accept(*this);
-    --d;
-}
-
 void PrinterV::visit(IfStatementA* a) {
     indent();
     cout << "IfStatementA\n";
@@ -224,13 +208,6 @@ void PrinterV::visit(IfStatementA* a) {
     if (a->getStatement2() != nullptr) {
         a->getStatement2()->accept(*this);
     }
-    --d;
-}
-void PrinterV::visit(ExpressionStatementA* a) {
-    indent();
-    cout << "ExpressionStatementA\n";
-    ++d;
-    a->getExpression()->accept(*this);
     --d;
 }
 
@@ -271,14 +248,6 @@ void PrinterV::visit(BlockA* a) {
     --d;
 }
 
-void PrinterV::visit(BlockStatementA* a) {
-    indent();
-    cout << "BlockStatementA\n";
-    ++d;
-    a->getBlock()->accept(*this);
-    --d;
-}
-
 void PrinterV::visit(EmptyStatementA* a) {
     indent();
     cout << "EmptyStatementA\n";
@@ -312,13 +281,6 @@ void PrinterV::visit(ArrayRefA* a) {
     --d;
 }
 
-void PrinterV::visit(PrimaryArrayA* a) {
-    indent();
-    cout << "PrimaryArrayA\n";
-    ++d;
-    a->getArray()->accept(*this);
-    --d;
-}
 
 void PrinterV::visit(NonArrayPrimaryA* a) {
     indent();
@@ -328,14 +290,6 @@ void PrinterV::visit(NonArrayPrimaryA* a) {
     --d;
 }
 
-void PrinterV::visit(CallA* a) {
-    indent();
-    cout << "CallA: " << a->getName() << "\n";
-    ++d;
-    a->getName()->accept(*this);
-    a->getExpressionList()->accept(*this);
-    --d;
-}
 
 void PrinterV::visit(SuperStatementA* a) {
     indent();
@@ -412,12 +366,5 @@ void PrinterV::visit(SuperFieldExprA* a) {
     cout << "SuperFieldExprA\n";
     ++d;
     a->getName()->accept(*this);
-    --d;
-}
-
-void PrinterV::visit(InitializerA* a) {
-    indent();
-    cout << "InitializerA\n";
-    ++d;
     --d;
 }

@@ -159,14 +159,6 @@ void Pass1V::visit(MethodBodyA* a) {
     --d;
 }
 
-void Pass1V::visit(FieldDeclA* a) {
-    a->setParent(parent);
-    parent = a;
-    a->setDepth(d);
-    ++d;
-    a->getFieldList()->accept(*this);
-    --d;
-}
 
 void Pass1V::visit(VarDeclA* a) {
     a->setParent(parent);
@@ -247,15 +239,6 @@ void Pass1V::visit(DeclStatementA* a) {
     --d;
 }
 
-void Pass1V::visit(LocalA* a) {
-    a->setParent(parent);
-    parent = a;
-    a->setDepth(d);
-    ++d;
-    a->getExpression()->accept(*this);
-    --d;
-}
-
 void Pass1V::visit(IfStatementA* a) {
     a->setParent(parent);
     parent = a;
@@ -266,14 +249,7 @@ void Pass1V::visit(IfStatementA* a) {
     a->getStatement2()->accept(*this);
     --d;
 }
-void Pass1V::visit(ExpressionStatementA* a) {
-    a->setParent(parent);
-    parent = a;
-    a->setDepth(d);
-    ++d;
-    a->getExpression()->accept(*this);
-    --d;
-}
+
 
 void Pass1V::visit(WhileStatementA* a) {
     a->setParent(parent);
@@ -317,14 +293,6 @@ void Pass1V::visit(BlockA* a) {
     --d;
 }
 
-void Pass1V::visit(BlockStatementA* a) {
-    a->setParent(parent);
-    parent = a;
-    a->setDepth(d);
-    ++d;
-    a->getBlock()->accept(*this);
-    --d;
-}
 
 void Pass1V::visit(EmptyStatementA* a) {
     a->setParent(parent);
@@ -363,14 +331,6 @@ void Pass1V::visit(ArrayRefA* a) {
     --d;
 }
 
-void Pass1V::visit(PrimaryArrayA* a) {
-    a->setParent(parent);
-    parent = a;
-    a->setDepth(d);
-    ++d;
-    a->getArray()->accept(*this);
-    --d;
-}
 
 void Pass1V::visit(NonArrayPrimaryA* a) {
     a->setParent(parent);
@@ -381,15 +341,6 @@ void Pass1V::visit(NonArrayPrimaryA* a) {
     --d;
 }
 
-void Pass1V::visit(CallA* a) {
-    a->setParent(parent);
-    parent = a;
-    a->setDepth(d);
-    ++d;
-    a->getName()->accept(*this);
-    a->getExpressionList()->accept(*this);
-    --d;
-}
 
 void Pass1V::visit(SuperStatementA* a) {
     a->setParent(parent);
@@ -475,13 +426,5 @@ void Pass1V::visit(SuperFieldExprA* a) {
     a->setDepth(d);
     ++d;
     a->getName()->accept(*this);
-    --d;
-}
-
-void Pass1V::visit(InitializerA* a) {
-    a->setParent(parent);
-    parent = a;
-    a->setDepth(d);
-    ++d;
     --d;
 }
